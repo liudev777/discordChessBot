@@ -75,4 +75,40 @@ class Model():
                 self.board[dest.x][dest.y].isAlive = False
             self.board[src.x][src.y].position = dest
 
+    def calculateAll(self):
+        for pieces in self.piece_lists:
+            if pieces:
+                for piece in pieces:
+                    piece_type = str(piece.type)
+                    if piece_type == "P":
+                        self.calculatePawn(piece)
+                    elif piece_type == "R":
+                        self.calculateRook(piece)
+                    elif piece_type == "N":
+                        self.calculateKnight(piece)
+                    elif piece_type == "B":
+                        self.calculateBishop(piece)
+                    elif piece_type == "Q":
+                        self.calculateQueen(piece)
+                    elif piece_type == "K":
+                        self.calculateKing(piece)
+                        
+    def calculatePawn(self):
+        pass
+
+    def calculateRook(self):
+        pass
+
+    def calculateKnight(self):
+        pass
+
+    def calculateBishop(self):
+        pass
+
+    def calculateQueen(self):
+        pass
+    
+    def calculateKing(self):
+        pass
+
 print(Model())
