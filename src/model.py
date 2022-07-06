@@ -94,6 +94,7 @@ class Model():
                         self.calculateKing(piece)
                         
     def calculatePawn(self):
+        moves = []
         pass
 
     def calculateRook(self):
