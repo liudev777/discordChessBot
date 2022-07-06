@@ -93,10 +93,30 @@ class Model():
                     elif piece_type == "K":
                         self.calculateKing(piece)
                         
-    def calculatePawn(self):
-        moves = []
-        pass
+    def calculatePawn(self, piece):
 
+        """
+        Plan:
+        keep a list of all possible moves made by looping through all the offsets and if it doesn't go out of bound or hits another piece, adds it to the list.
+        """
+        
+        boardLimit = [-1, 9]
+        moves = []
+        curr_pos = piece.position
+
+        forward = 1 if piece.type == "w" else -1 #differentiate white piece from black piece
+        offsets = [(0, forward)] #regular move forward
+        specialOffset = [(0, forward * 2)] #move two square at start
+        takeOffset = [(-1, forward), (1, forward)] #take diagonally
+
+        for offset in offsets:
+            for x, y in offset:
+                if curr_pos.x + x in boardLimit or curr_pos.y + y in boardLimit:
+                    pass #tbi
+                else:
+                    pass #tbi
+
+        
     def calculateRook(self):
         pass
 
