@@ -3,6 +3,11 @@ from matplotlib.pyplot import pie
 from settings import Position
 import numpy as np
 
+X_MAX = 8
+X_MIN = -1
+Y_MAX = 8
+Y_MIN = -1
+
 class Piece():
     def __init__(self, color: str, type: str, ver: int, position: Position=None) -> None: 
         if position is None:
@@ -12,7 +17,7 @@ class Piece():
         self.color = color
         self.type = type
         self.ver = ver
-        self.moves = [False]
+        self.moves = []
         self.isAlive = True
         
     def __str__(self) -> str:
@@ -61,7 +66,6 @@ class Model():
         self.bishops[3] = Piece("b", "B", 2, Position(5,7))
         self.knights[3] = Piece("b", "N", 2, Position(6,7))
         self.rooks[3] = Piece("b", "R", 2, Position(7,7))
-
         # iterates through all pieces and places them in board array
         for pieces in self.piece_lists:
             for piece in pieces:
@@ -76,25 +80,15 @@ class Model():
             self.board[src.x][src.y].position = dest
 
     def calculateAll(self):
-        for pieces in self.piece_lists:
-            if pieces:
-                for piece in pieces:
-                    piece_type = str(piece.type)
-                    if piece_type == "P":
-                        self.calculatePawn(piece)
-                    elif piece_type == "R":
-                        self.calculateRook(piece)
-                    elif piece_type == "N":
-                        self.calculateKnight(piece)
-                    elif piece_type == "B":
-                        self.calculateBishop(piece)
-                    elif piece_type == "Q":
-                        self.calculateQueen(piece)
-                    elif piece_type == "K":
-                        self.calculateKing(piece)
+        if self.piece_lists:
+            self.calculatePawns(self.piece_lists[0])
+            self.calculateKnights(self.piece_lists[1])
+            self.calculateBishops(self.piece_lists[2])
+            self.calculateRooks(self.piece_lists[3])
+            self.calculateQueens(self.piece_lists[4])
+            self.calculateKings(self.piece_lists[5])
                         
-    def calculatePawn(self, piece):
-
+    def calculatePawns(self, piece):
         """
         Plan:
         keep a list of all possible moves made by looping through all the offsets and if it doesn't go out of bound or hits another piece, adds it to the list.
@@ -104,20 +98,12 @@ class Model():
         curr_pos = piece.position
 
         forward = 1 if piece.color == "w" else -1 #differentiate white piece from black piece
-        offsets = [(0, forward)] #regular move forward
-        specialOffset = [(0, forward * 2)] #move two square at start
-        takeOffset = [(-1, forward), (1, forward)] #take diagonally
-
-        for offset in offsets:
-            x_inc = offset[0]
-            y_inc = offset[1]
-            new_pos = Position(curr_pos.x, curr_pos.y)
-            print('new_pos', new_pos)
-            if self.board[new_pos.x + x_inc][new_pos.y + y_inc]:
-                break
-            new_pos = Position(curr_pos.x + x_inc, curr_pos.y + y_inc)
+    
+        if not self.board[curr_pos.x][curr_pos.y + forward]:
+            new_pos = Position(curr_pos.x, curr_pos.y + forward)
             possible_moves.append(new_pos)
-        
+            
+        # checks for starting position to move 2 spaces
         if piece.color == "w" and piece.position.y == 1 and not self.board[curr_pos.x][curr_pos.y + 2]:
             possible_moves.append(Position(curr_pos.x, curr_pos.y + 2))
         if piece.color == "b" and piece.position.y == 6 and not self.board[curr_pos.x][curr_pos.y - 2]:
@@ -126,25 +112,49 @@ class Model():
         return possible_moves
                 
 
-        
-    def calculateRook(self):
+    def calculateRooks(self, pieces):
+        for piece in pieces:
+            position = piece.position
+            if position.x < 7:
+                for i in range(position.x + 1, X_MAX):
+                    if self.board[i][position.y]:
+                        break
+                    else:
+                        piece.moves.append(Position(i, position.y))
+            if position.x > 0:    
+                for i in range(position.x - 1, X_MIN, -1):
+                    if self.board[i][position.y]:
+                        break
+                    else:
+                        piece.moves.append(Position(i, position.y))
+            if position.y < 7:
+                for i in range(position.y + 1, Y_MAX):
+                    if self.board[position.x][i]:
+                        break
+                    else:
+                        piece.moves.append(Position(position.x, i))
+            if position.y > 0:
+                for i in range(position.y - 1, Y_MIN, -1):
+                    if self.board[position.x][i]:
+                        break
+                    else:
+                        piece.moves.append(Position(position.x, i))
+
+    def calculateKnights(self, pieces):
         pass
 
-    def calculateKnight(self):
+    def calculateBishops(self, pieces):
         pass
 
-    def calculateBishop(self):
-        pass
-
-    def calculateQueen(self):
+    def calculateQueens(self, pieces):
         pass
     
-    def calculateKing(self):
+    def calculateKings(self):
         pass
 
 m = Model()
 print(m.board[1][1])
 m.board[1][3] = Piece("w", "P", 3, Position(1, 3))
-print(m.calculatePawn(m.board[1][3]))
-print(m.calculatePawn(m.board[0][1]))
+print(m.calculatePawns(m.board[1][6]))
+# print(m.calculatePawns(m.board[0][1]))
 print(m)
