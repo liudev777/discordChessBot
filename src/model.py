@@ -114,10 +114,14 @@ class Model():
             new_pos = Position(curr_pos.x, curr_pos.y)
             print('new_pos', new_pos)
             if self.board[new_pos.x + x_inc][new_pos.y + y_inc]:
-                print("here 2") # delete
                 break
             new_pos = Position(curr_pos.x + x_inc, curr_pos.y + y_inc)
             possible_moves.append(new_pos)
+        
+        if piece.color == "w" and piece.position.y == 1 and not self.board[curr_pos.x][curr_pos.y + 2]:
+            possible_moves.append(Position(curr_pos.x, curr_pos.y + 2))
+        if piece.color == "b" and piece.position.y == 6 and not self.board[curr_pos.x][curr_pos.y - 2]:
+             possible_moves.append(Position(curr_pos.x, curr_pos.y - 2))
             
         return possible_moves
                 
@@ -138,7 +142,9 @@ class Model():
     def calculateKing(self):
         pass
 
-print(Model())
-print(Model().board[0][1])
-Model().board[0][2]
-print(Model().calculatePawn(Model().board[0][1]))
+m = Model()
+print(m.board[1][1])
+m.board[1][3] = Piece("w", "P", 3, Position(1, 3))
+print(m.calculatePawn(m.board[1][3]))
+print(m.calculatePawn(m.board[0][1]))
+print(m)
