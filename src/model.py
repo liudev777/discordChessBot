@@ -99,22 +99,28 @@ class Model():
         Plan:
         keep a list of all possible moves made by looping through all the offsets and if it doesn't go out of bound or hits another piece, adds it to the list.
         """
-        
-        boardLimit = [-1, 9]
-        moves = []
+        possible_moves = []
+        boardLimit = [-1, 8]
         curr_pos = piece.position
 
-        forward = 1 if piece.type == "w" else -1 #differentiate white piece from black piece
+        forward = 1 if piece.color == "w" else -1 #differentiate white piece from black piece
         offsets = [(0, forward)] #regular move forward
         specialOffset = [(0, forward * 2)] #move two square at start
         takeOffset = [(-1, forward), (1, forward)] #take diagonally
 
         for offset in offsets:
-            for x, y in offset:
-                if curr_pos.x + x in boardLimit or curr_pos.y + y in boardLimit:
-                    pass #tbi
-                else:
-                    pass #tbi
+            x_inc = offset[0]
+            y_inc = offset[1]
+            new_pos = Position(curr_pos.x, curr_pos.y)
+            print('new_pos', new_pos)
+            if self.board[new_pos.x + x_inc][new_pos.y + y_inc]:
+                print("here 2") # delete
+                break
+            new_pos = Position(curr_pos.x + x_inc, curr_pos.y + y_inc)
+            possible_moves.append(new_pos)
+            
+        return possible_moves
+                
 
         
     def calculateRook(self):
@@ -133,3 +139,5 @@ class Model():
         pass
 
 print(Model())
+print(Model().board[0][1])
+print(Model().calculatePawn(Model().board[0][1]))
