@@ -140,4 +140,5 @@ class Model():
 
 print(Model())
 print(Model().board[0][1])
+Model().board[0][2]
 print(Model().calculatePawn(Model().board[0][1]))
