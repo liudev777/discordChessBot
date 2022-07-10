@@ -88,28 +88,29 @@ class Model():
             self.calculateQueens(self.piece_lists[4])
             self.calculateKings(self.piece_lists[5])
                         
-    def calculatePawns(self, piece):
+    def calculatePawns(self, pieces):
         """
         Plan:
         keep a list of all possible moves made by looping through all the offsets and if it doesn't go out of bound or hits another piece, adds it to the list.
         """
-        possible_moves = []
         boardLimit = [-1, 8]
-        curr_pos = piece.position
 
-        forward = 1 if piece.color == "w" else -1 #differentiate white piece from black piece
-    
-        if not self.board[curr_pos.x][curr_pos.y + forward]:
-            new_pos = Position(curr_pos.x, curr_pos.y + forward)
-            possible_moves.append(new_pos)
+        for piece in pieces:
+            curr_pos = piece.position
+
+            forward = 1 if piece.color == "w" else -1 #differentiate white piece from black piece
+        
+            if not curr_pos.y + forward in boardLimit:
+                if not self.board[curr_pos.x][curr_pos.y + forward]:
+                    new_pos = Position(curr_pos.x, curr_pos.y + forward)
+                    piece.move.append(new_pos)
+                
+            # checks for starting position to move 2 spaces
+            if piece.color == "w" and piece.position.y == 1 and not self.board[curr_pos.x][curr_pos.y + 2]:
+                piece.move.append(Position(curr_pos.x, curr_pos.y + 2))
+            if piece.color == "b" and piece.position.y == 6 and not self.board[curr_pos.x][curr_pos.y - 2]:
+                piece.move.append(Position(curr_pos.x, curr_pos.y - 2))
             
-        # checks for starting position to move 2 spaces
-        if piece.color == "w" and piece.position.y == 1 and not self.board[curr_pos.x][curr_pos.y + 2]:
-            possible_moves.append(Position(curr_pos.x, curr_pos.y + 2))
-        if piece.color == "b" and piece.position.y == 6 and not self.board[curr_pos.x][curr_pos.y - 2]:
-             possible_moves.append(Position(curr_pos.x, curr_pos.y - 2))
-            
-        return possible_moves
                 
 
     def calculateRooks(self, pieces):
@@ -147,7 +148,8 @@ class Model():
         pass
 
     def calculateQueens(self, pieces):
-        pass
+        self.calculateRooks(pieces)
+        self.calculateBishops(pieces)
     
     def calculateKings(self):
         pass
