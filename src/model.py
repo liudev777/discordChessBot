@@ -3,10 +3,9 @@ from matplotlib.pyplot import pie
 from settings import Position
 import numpy as np
 
-X_MAX = 8
-X_MIN = -1
-Y_MAX = 8
-Y_MIN = -1
+MAX = 8
+MIN = -1
+
 
 class Piece():
     def __init__(self, color: str, type: str, ver: int, position: Position=None) -> None: 
@@ -121,25 +120,25 @@ class Model():
         for piece in pieces:
             position = piece.position
             if position.x < 7:
-                for i in range(position.x + 1, X_MAX):
+                for i in range(position.x + 1, MAX):
                     if self.board[i][position.y]:
                         break
                     else:
                         piece.moves.append(Position(i, position.y))
             if position.x > 0:    
-                for i in range(position.x - 1, X_MIN, -1):
+                for i in range(position.x - 1, MIN, -1):
                     if self.board[i][position.y]:
                         break
                     else:
                         piece.moves.append(Position(i, position.y))
             if position.y < 7:
-                for i in range(position.y + 1, Y_MAX):
+                for i in range(position.y + 1, MAX):
                     if self.board[position.x][i]:
                         break
                     else:
                         piece.moves.append(Position(position.x, i))
             if position.y > 0:
-                for i in range(position.y - 1, Y_MIN, -1):
+                for i in range(position.y - 1, MIN, -1):
                     if self.board[position.x][i]:
                         break
                     else:
@@ -159,9 +158,4 @@ class Model():
         pass
 
 m = Model()
-print(m.board[1][1])
-m.board[1][3] = Piece("w", "P", 3, Position(1, 3))
-m.pawns.append(m.board[1][3])
-m.calculatePawns(m.pawns)
-print('moves', m.pawns.moves)
 print(m)
