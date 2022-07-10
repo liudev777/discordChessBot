@@ -43,6 +43,10 @@ class Model():
         self.piece_lists = [self.pawns, self.knights, self.bishops, self.rooks, self.queens, self.kings]
         self.board = [[None for x in range(8)] for y in range(8)]
 
+
+        """
+        we chose to append each piece into their type list so board doesn't have to check all the None types on the board to calculate pieces
+        """
         for i in range(len(self.pawns)):
             if i < 8:
                 self.pawns[i] = Piece("w", "P", i+1, Position(i,1))
@@ -103,13 +107,13 @@ class Model():
             if not curr_pos.y + forward in boardLimit:
                 if not self.board[curr_pos.x][curr_pos.y + forward]:
                     new_pos = Position(curr_pos.x, curr_pos.y + forward)
-                    piece.move.append(new_pos)
+                    piece.moves.append(new_pos)
                 
             # checks for starting position to move 2 spaces
             if piece.color == "w" and piece.position.y == 1 and not self.board[curr_pos.x][curr_pos.y + 2]:
-                piece.move.append(Position(curr_pos.x, curr_pos.y + 2))
+                piece.moves.append(Position(curr_pos.x, curr_pos.y + 2))
             if piece.color == "b" and piece.position.y == 6 and not self.board[curr_pos.x][curr_pos.y - 2]:
-                piece.move.append(Position(curr_pos.x, curr_pos.y - 2))
+                piece.moves.append(Position(curr_pos.x, curr_pos.y - 2))
             
                 
 
@@ -157,6 +161,7 @@ class Model():
 m = Model()
 print(m.board[1][1])
 m.board[1][3] = Piece("w", "P", 3, Position(1, 3))
-print(m.calculatePawns(m.board[1][6]))
-# print(m.calculatePawns(m.board[0][1]))
+m.pawns.append(m.board[1][3])
+m.calculatePawns(m.pawns)
+print('moves', m.pawns.moves)
 print(m)
