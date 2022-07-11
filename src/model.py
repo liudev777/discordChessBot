@@ -35,6 +35,14 @@ class Model():
         self.isCheck = False
         self.isCheckmate = False
         self.isStalemate = False
+
+        self.pawns = [None] * 16
+        self.knights = [None] * 4
+        self.bishops = [None] * 4
+        self.rooks = [None] * 4
+        self.queens = [None] * 2
+        self.kings = [None] * 2
+
         self.board = [[None for x in range(8)] for y in range(8)]
 
 
@@ -42,43 +50,39 @@ class Model():
         we chose to append each piece into their type list so board doesn't have to check all the None types on the board to calculate pieces
         """
         all_pieces = []
-        for i in range(16):
+        for i in range(len(self.pawns)):
             if i < 8:
-                all_pieces.append(Piece("w", "P", i+1, Position(i,1)))
+                self.pawns[i] = Piece("w", "P", i+1, Position(i,1))
             elif i < 16:
-                all_pieces.append(Piece("b", "P", i-7, Position(i-8,6)))
+                self.pawns[i] = Piece("b", "P", i-7, Position(i-8,6))
 
-        all_pieces.append(Piece("w", "R", 1, Position(0,0)))
-        all_pieces.append(Piece("w", "N", 1, Position(1,0)))
-        all_pieces.append(Piece("w", "B", 1, Position(2,0)))
-        all_pieces.append(Piece("w", "Q", 1, Position(3,0)))
-        all_pieces.append(Piece("w", "K", 1, Position(4,0)))
-        all_pieces.append(Piece("w", "B", 2, Position(5,0)))
-        all_pieces.append(Piece("w", "N", 2, Position(6,0)))
-        all_pieces.append(Piece("w", "R", 2, Position(7,0)))
+        self.rooks[0] = Piece("w", "R", 1, Position(0,0))
+        self.knights[0] = Piece("w", "N", 1, Position(1,0))
+        self.bishops[0] = Piece("w", "B", 1, Position(2,0))
+        self.queens[0] = Piece("w", "Q", 1, Position(3,0))
+        self.kings[0] = Piece("w", "K", 1, Position(4,0))
+        self.bishops[1] = Piece("w", "B", 2, Position(5,0))
+        self.knights[1] = Piece("w", "N", 2, Position(6,0))
+        self.rooks[1] = Piece("w", "R", 2, Position(7,0))
 
-        all_pieces.append(Piece("b", "R", 1, Position(0,7)))
-        all_pieces.append(Piece("b", "N", 1, Position(1,7)))
-        all_pieces.append(Piece("b", "B", 1, Position(2,7)))
-        all_pieces.append(Piece("b", "K", 1, Position(3,7)))
-        all_pieces.append(Piece("b", "Q", 1, Position(4,7)))
-        all_pieces.append(Piece("b", "B", 2, Position(5,7)))
-        all_pieces.append(Piece("b", "N", 2, Position(6,7)))
-        all_pieces.append(Piece("b", "R", 2, Position(7,7)))
+        self.rooks[2] = Piece("b", "R", 1, Position(0,7))
+        self.knights[2] = Piece("b", "N", 1, Position(1,7))
+        self.bishops[2] = Piece("b", "B", 1, Position(2,7))
+        self.kings[1] = Piece("b", "K", 1, Position(3,7))
+        self.queens[1] = Piece("b", "Q", 1, Position(4,7))
+        self.bishops[3] = Piece("b", "B", 2, Position(5,7))
+        self.knights[3] = Piece("b", "N", 2, Position(6,7))
+        self.rooks[3] = Piece("b", "R", 2, Position(7,7))
 
 
         self.piece_dict = {
-            "P": [],
-            "R": [],
-            "N": [],
-            "B": [],
-            "Q": [],
-            "K": [],
+            "P": self.pawns,
+            "R": self.rooks,
+            "N": self.knights,
+            "B": self.bishops,
+            "Q": self.queens,
+            "K": self.kings,
         }
-
-        for piece in all_pieces:
-            self.piece_dict[piece.type].append(piece)
-
         # iterates through all pieces and places them in board array
         for pieces in self.piece_dict.values():
             for piece in pieces:
