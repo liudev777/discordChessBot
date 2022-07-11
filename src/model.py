@@ -2,6 +2,7 @@ from collections import namedtuple
 from matplotlib.pyplot import pie
 from settings import Position
 import numpy as np
+from pprint import pp
 
 MAX = 8
 MIN = -1
@@ -33,13 +34,14 @@ class Model():
         self.isCheck = False
         self.isCheckmate = False
         self.isStalemate = False
+
         self.pawns = [None] * 16
         self.knights = [None] * 4
         self.bishops = [None] * 4
         self.rooks = [None] * 4
         self.queens = [None] * 2
         self.kings = [None] * 2
-        self.piece_lists = [self.pawns, self.knights, self.bishops, self.rooks, self.queens, self.kings]
+
         self.board = [[None for x in range(8)] for y in range(8)]
 
 
@@ -69,8 +71,18 @@ class Model():
         self.bishops[3] = Piece("b", "B", 2, Position(5,7))
         self.knights[3] = Piece("b", "N", 2, Position(6,7))
         self.rooks[3] = Piece("b", "R", 2, Position(7,7))
+
+
+        self.piece_dict = {
+            "P": self.pawns,
+            "R": self.rooks,
+            "N": self.knights,
+            "B": self.bishops,
+            "Q": self.queens,
+            "K": self.kings,
+        }
         # iterates through all pieces and places them in board array
-        for pieces in self.piece_lists:
+        for pieces in self.piece_dict.values():
             for piece in pieces:
                 self.board[piece.position.x][piece.position.y] = piece
         
@@ -83,13 +95,13 @@ class Model():
             self.board[src.x][src.y].position = dest
 
     def calculateAll(self):
-        if self.piece_lists:
-            self.calculatePawns(self.piece_lists[0])
-            self.calculateKnights(self.piece_lists[1])
-            self.calculateBishops(self.piece_lists[2])
-            self.calculateRooks(self.piece_lists[3])
-            self.calculateQueens(self.piece_lists[4])
-            self.calculateKings(self.piece_lists[5])
+        if self.piece_dict:
+            self.calculatePawns(self.piece_dict["P"])
+            self.calculateKnights(self.piece_dict["R"])
+            self.calculateBishops(self.piece_dict["N"])
+            self.calculateRooks(self.piece_dict["B"])
+            self.calculateQueens(self.piece_dict["Q"])
+            self.calculateKings(self.piece_dict["K"])
                         
     def calculatePawns(self, pieces):
         """
@@ -159,3 +171,4 @@ class Model():
 
 m = Model()
 print(m)
+pp(m.piece_dict)
