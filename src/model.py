@@ -49,7 +49,6 @@ class Model():
         """
         we chose to append each piece into their type list so board doesn't have to check all the None types on the board to calculate pieces
         """
-        all_pieces = []
         for i in range(len(self.pawns)):
             if i < 8:
                 self.pawns[i] = Piece("w", "P", i+1, Position(i,1))
