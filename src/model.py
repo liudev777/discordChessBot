@@ -184,7 +184,31 @@ class Model():
                     pass
 
     def calculateBishops(self, pieces):
-        pass
+        offsetRange = [
+            (1, 1),
+            (1, -1),
+            (-1, 1),
+            (-1, -1)
+        ]
+        for piece in pieces:
+            curr_pos = piece.position
+            for rang in offsetRange:
+                new_y = curr_pos.y + rang[1]
+                new_x = curr_pos.x + rang[0]
+                while True:
+                    print(new_x, new_y)
+                    try:
+                        if new_x in [MIN, MAX] or new_y in [MIN, MAX]:
+                            break
+                        if not self.board[new_x][new_y]:
+                            piece.moves.append(Position(new_x, new_y))
+                            new_x += rang[0]
+                            new_y += rang[1]
+                        else:
+                            break
+                    except:
+                        break
+            
 
     def calculateQueens(self, pieces):
         self.calculateRooks(pieces)
@@ -210,7 +234,7 @@ class Model():
                     if not self.board[new_x][new_y]:
                         piece.moves.append(Position(new_x, new_y))
                 except IndexError:
-                    pass
+                    print('out of bound')
 
 
             
@@ -219,8 +243,6 @@ class Model():
 m = Model()
 pp(m.piece_dict)
 print(m)
-m.calculateKnights(m.piece_dict["N"])
-pp(m.piece_dict["N"][0].moves)
 
 
 """
