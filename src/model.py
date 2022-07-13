@@ -94,6 +94,13 @@ class Model():
     def __str__(self) -> str:
         return f'{np.matrix(self.board)}'
 
+    def deletePiece(self, position: Position):
+        piece = self.board[position.x][position.y]
+        print(piece)
+        if piece:
+            self.piece_dict[piece.type].remove(piece)
+            self.board[position.x][position.y] = None
+
     def movePiece(self, src: Position, dest: Position):
             if self.board[dest.x][dest.y] != None:
                 self.board[dest.x][dest.y].isAlive = False
@@ -197,6 +204,9 @@ class Model():
             
 
 m = Model()
+m.deletePiece(Position(1,1))
+m.deletePiece(Position(2,1))
+m.deletePiece(Position(3,1))
 pp(m.piece_dict)
 print(m)
 
