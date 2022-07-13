@@ -196,7 +196,6 @@ class Model():
                 new_y = curr_pos.y + rang[1]
                 new_x = curr_pos.x + rang[0]
                 while True:
-                    print(new_x, new_y)
                     try:
                         if new_x in [MIN, MAX] or new_y in [MIN, MAX]:
                             break
@@ -242,6 +241,10 @@ class Model():
 
 m = Model()
 pp(m.piece_dict)
+m.board[4][1] = None
+m.board[3][1] = None
+m.calculateQueens(m.piece_dict["Q"])
+print(m.piece_dict["Q"][0].moves)
 print(m)
 
 
