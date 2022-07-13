@@ -1,3 +1,4 @@
+from ast import Raise
 from collections import namedtuple
 from matplotlib.pyplot import pie
 from settings import Position
@@ -95,11 +96,14 @@ class Model():
         return f'{np.matrix(self.board)}'
 
     def deletePiece(self, position: Position):
-        piece = self.board[position.x][position.y]
-        print(piece)
-        if piece:
-            self.piece_dict[piece.type].remove(piece)
-            self.board[position.x][position.y] = None
+        try:
+            piece = self.board[position.x][position.y]
+            print(piece)    
+            if piece:
+                self.piece_dict[piece.type].remove(piece)
+                self.board[position.x][position.y] = None
+        except IndexError:
+            print("out of bound range")
 
     def movePiece(self, src: Position, dest: Position):
             if self.board[dest.x][dest.y] != None:
@@ -207,6 +211,7 @@ m = Model()
 m.deletePiece(Position(1,1))
 m.deletePiece(Position(2,1))
 m.deletePiece(Position(3,1))
+m.deletePiece(Position(9,9))
 pp(m.piece_dict)
 print(m)
 
