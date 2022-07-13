@@ -26,6 +26,9 @@ class Piece():
     def __repr__(self) -> str:
         return f'{self.color}{self.type}{self.ver}'
 
+    def __del__(self):
+        pass
+
 
 class Model():
     def __init__(self) -> None:
@@ -34,6 +37,7 @@ class Model():
         self.isCheck = False
         self.isCheckmate = False
         self.isStalemate = False
+        self.canCastle = False
 
         self.pawns = [None] * 16
         self.knights = [None] * 4
@@ -71,6 +75,7 @@ class Model():
         self.bishops[3] = Piece("b", "B", 2, Position(5,7))
         self.knights[3] = Piece("b", "N", 2, Position(6,7))
         self.rooks[3] = Piece("b", "R", 2, Position(7,7))
+
 
 
         self.piece_dict = {
@@ -166,9 +171,37 @@ class Model():
         self.calculateRooks(pieces)
         self.calculateBishops(pieces)
     
-    def calculateKings(self):
-        pass
+    def calculateKings(self, pieces):
+        offsetRange = [
+            (-1, -1),
+            (-1, 1),
+            (1, 1),
+            (1, -1),
+            (0, 1),
+            (0, -1),
+            (1, 0),
+            (-1, 0)
+        ]
+        for piece in pieces:
+            curr_pos = piece.position
+            limit = [MIN, MAX]
+            for rang in offsetRange:
+                new_x = curr_pos.x + rang[0]
+                new_y = curr_pos.y + rang[1]
+                if not new_x in limit and not new_y in limit:
+                    if not self.board[new_x][new_y]:
+                        piece.moves.append(Position(new_x, new_y))
+
+
+            
+            
 
 m = Model()
-print(m)
 pp(m.piece_dict)
+print(m)
+
+
+"""
+TO DO:
+update board after every move
+"""
