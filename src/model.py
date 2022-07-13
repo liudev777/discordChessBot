@@ -162,7 +162,26 @@ class Model():
                         piece.moves.append(Position(position.x, i))
 
     def calculateKnights(self, pieces):
-        pass
+        offsetRange = [
+            (1, 2),
+            (2, 1),
+            (2, -1),
+            (1, -2),
+            (-1, -2),
+            (-2, -1),
+            (-2, 1),
+            (-1, 2)
+        ]
+        for piece in pieces:
+            curr_pos = piece.position
+            for rang in offsetRange:
+                new_x = curr_pos.x + rang[0]
+                new_y = curr_pos.y + rang[1]
+                try:
+                    if not self.board[new_x][new_y]:
+                        piece.moves.append(Position(new_x, new_y))
+                except IndexError:
+                    pass
 
     def calculateBishops(self, pieces):
         pass
@@ -184,13 +203,14 @@ class Model():
         ]
         for piece in pieces:
             curr_pos = piece.position
-            limit = [MIN, MAX]
             for rang in offsetRange:
                 new_x = curr_pos.x + rang[0]
                 new_y = curr_pos.y + rang[1]
-                if not new_x in limit and not new_y in limit:
+                try:
                     if not self.board[new_x][new_y]:
                         piece.moves.append(Position(new_x, new_y))
+                except IndexError:
+                    pass
 
 
             
@@ -199,6 +219,8 @@ class Model():
 m = Model()
 pp(m.piece_dict)
 print(m)
+m.calculateKnights(m.piece_dict["N"])
+pp(m.piece_dict["N"][0].moves)
 
 
 """
