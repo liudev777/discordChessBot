@@ -14,11 +14,12 @@ class Piece():
             self.position = Position(-1,-1)
         else:
             self.position = position
-        self.color = color
-        self.type = type
-        self.ver = ver
-        self.moves = []
-        self.isAlive = True
+            self.color = color
+            self.type = type
+            self.ver = ver
+            self.moves = [False]
+            self.isAlive = True
+
         
     def __str__(self) -> str:
         return (f'color: {self.color}, type: {self.type}, moves: {self.moves}, isAlive: {self.isAlive} position: {self.position}')
