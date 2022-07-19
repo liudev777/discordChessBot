@@ -107,12 +107,13 @@ class Model():
             self.calculateRooks(self.piece_dict["B"])
             self.calculateQueens(self.piece_dict["Q"])
             self.calculateKings(self.piece_dict["K"])
-                        
+
+    """
+    Plan:
+    keep a list of all possible moves made by looping through all the offsets and if it doesn't go out of bound or hits another piece, adds it to the list.
+    """                   
     def calculatePawns(self, pieces):
-        """
-        Plan:
-        keep a list of all possible moves made by looping through all the offsets and if it doesn't go out of bound or hits another piece, adds it to the list.
-        """
+       
         boardLimit = [-1, 8]
 
         for piece in pieces:
@@ -134,32 +135,34 @@ class Model():
                 
 
     def calculateRooks(self, pieces):
+        offsetRange = [
+            (0, 1),
+            (0, -1),
+            (-1, 0),
+            (-1, -0)
+        ]
         for piece in pieces:
-            position = piece.position
-            if position.x < 7:
-                for i in range(position.x + 1, MAX):
-                    if self.board[i][position.y]:
+            curr_pos = piece.position
+            for rang in offsetRange:
+                new_y = curr_pos.y + rang[1]
+                new_x = curr_pos.x + rang[0]
+                while True: #loops through empty space until out of bound or hit another piece
+                    try:
+                        if not (new_x > MIN and new_x < MAX and new_y > MIN and new_y < MAX): # check for out of bound
+                            break
+                        if self.board[new_x][new_y]: #adds opposite color piece coord into moveset
+                            if self.board[new_x][new_y].color != piece.color:
+                                print(self.board[new_x][new_y].color)
+                                piece.moves.append(Position(new_x, new_y))  
+                                break
+                        if not self.board[new_x][new_y]: #add to move if board is empty and increment x y
+                            piece.moves.append(Position(new_x, new_y))
+                            new_x += rang[0]
+                            new_y += rang[1]
+                        else:
+                            break
+                    except:
                         break
-                    else:
-                        piece.moves.append(Position(i, position.y))
-            if position.x > 0:    
-                for i in range(position.x - 1, MIN, -1):
-                    if self.board[i][position.y]:
-                        break
-                    else:
-                        piece.moves.append(Position(i, position.y))
-            if position.y < 7:
-                for i in range(position.y + 1, MAX):
-                    if self.board[position.x][i]:
-                        break
-                    else:
-                        piece.moves.append(Position(position.x, i))
-            if position.y > 0:
-                for i in range(position.y - 1, MIN, -1):
-                    if self.board[position.x][i]:
-                        break
-                    else:
-                        piece.moves.append(Position(position.x, i))
 
     def calculateKnights(self, pieces):
         offsetRange = [
@@ -173,15 +176,18 @@ class Model():
             (-1, 2)
         ]
         for piece in pieces:
-            curr_pos = piece.position
+            curr_pos = piece.position # current position
             for rang in offsetRange:
                 new_x = curr_pos.x + rang[0]
                 new_y = curr_pos.y + rang[1]
-                try:
-                    if not self.board[new_x][new_y]:
-                        piece.moves.append(Position(new_x, new_y))
-                except IndexError:
-                    pass
+                if new_x > MIN and new_x < MAX and new_y > MIN and new_y < MAX: # check for out of bound
+                    try:
+                        if self.board[new_x][new_y] == None: # add to move
+                            piece.moves.append(Position(new_x, new_y))
+                        elif self.board[new_x][new_y].color != piece.color: #add to move is other piece is diff color
+                            piece.moves.append(Position(new_x, new_y))
+                    except IndexError:
+                        pass
 
     def calculateBishops(self, pieces):
         offsetRange = [
@@ -195,11 +201,16 @@ class Model():
             for rang in offsetRange:
                 new_y = curr_pos.y + rang[1]
                 new_x = curr_pos.x + rang[0]
-                while True:
+                while True: #loops through empty space until out of bound or hit another piece
                     try:
-                        if new_x in [MIN, MAX] or new_y in [MIN, MAX]:
+                        if not (new_x > MIN and new_x < MAX and new_y > MIN and new_y < MAX): # check for out of bound
                             break
-                        if not self.board[new_x][new_y]:
+                        if self.board[new_x][new_y]: #adds opposite color piece coord into moveset
+                            if self.board[new_x][new_y].color != piece.color:
+                                print(self.board[new_x][new_y].color)
+                                piece.moves.append(Position(new_x, new_y))  
+                                break
+                        if not self.board[new_x][new_y]: #add to move if board is empty and increment x y
                             piece.moves.append(Position(new_x, new_y))
                             new_x += rang[0]
                             new_y += rang[1]
@@ -241,10 +252,6 @@ class Model():
 
 m = Model()
 pp(m.piece_dict)
-m.board[4][1] = None
-m.board[3][1] = None
-m.calculateQueens(m.piece_dict["Q"])
-print(m.piece_dict["Q"][0].moves)
 print(m)
 
 
