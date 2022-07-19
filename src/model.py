@@ -85,7 +85,7 @@ class Model():
             "R": self.rooks,
             "N": self.knights,
             "B": self.bishops,
-            "Q": self.queens,
+            "Q": self.queens, 
             "K": self.kings,
         }
         # iterates through all pieces and places them in board array
@@ -164,8 +164,7 @@ class Model():
                             break
                         if self.board[new_x][new_y]: #adds opposite color piece coord into moveset
                             if self.board[new_x][new_y].color != piece.color:
-                                print(self.board[new_x][new_y].color)
-                                piece.moves.append(Position(new_x, new_y))  
+                                piece.canTakes.append(Position(new_x, new_y))  
                                 break
                         if not self.board[new_x][new_y]: #add to move if board is empty and increment x y
                             piece.moves.append(Position(new_x, new_y))
@@ -197,7 +196,7 @@ class Model():
                         if self.board[new_x][new_y] == None: # add to move
                             piece.moves.append(Position(new_x, new_y))
                         elif self.board[new_x][new_y].color != piece.color: #add to move is other piece is diff color
-                            piece.moves.append(Position(new_x, new_y))
+                            piece.canTakes.append(Position(new_x, new_y))
                     except IndexError:
                         pass
 
@@ -220,7 +219,7 @@ class Model():
                         if self.board[new_x][new_y]: #adds opposite color piece coord into moveset
                             if self.board[new_x][new_y].color != piece.color:
                                 print(self.board[new_x][new_y].color)
-                                piece.moves.append(Position(new_x, new_y))  
+                                piece.canTakes.append(Position(new_x, new_y))  
                                 break
                         if not self.board[new_x][new_y]: #add to move if board is empty and increment x y
                             piece.moves.append(Position(new_x, new_y))
@@ -252,11 +251,16 @@ class Model():
             for rang in offsetRange:
                 new_x = curr_pos.x + rang[0]
                 new_y = curr_pos.y + rang[1]
-                try:
-                    if not self.board[new_x][new_y]:
-                        piece.moves.append(Position(new_x, new_y))
-                except IndexError:
-                    print('out of bound')
+                if not (new_x > MIN and new_x < MAX and new_y > MIN and new_y < MAX): # check for out of bound
+                    try:
+                        if self.board[new_x][new_y] == None: # add none space to move
+                            piece.moves.append(Position(new_x, new_y))
+                        elif self.board[new_x][new_y].color != piece.color:
+                            print(self.board[new_x][new_y].color)
+                            piece.canTakes.append(Position(new_x, new_y))  
+                            break
+                    except IndexError:
+                        print('out of bound')
 
 
             
