@@ -3,6 +3,7 @@ import lightbulb
 import os
 from dotenv import load_dotenv
 from model import Model
+from controller import Controller
 
 load_dotenv()
 
@@ -51,6 +52,13 @@ async def edit(ctx):
     count += 2
     await bot.rest.edit_message(m.channel_id, m.id, messages[num])
     await ctx.respond("changed", flags=hikari.MessageFlag.EPHEMERAL)
+
+c = Controller()
+@bot.command
+@lightbulb.command('ping', 'ping')
+@lightbulb.implements(lightbulb.SlashCommand)
+async def ping(ctx):
+    await ctx.respond(c.ping())
 
 
 
