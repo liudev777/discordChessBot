@@ -1,5 +1,6 @@
 from ast import Raise
 from collections import namedtuple
+from types import NoneType
 from matplotlib.pyplot import pie
 from settings import Position
 import numpy as np
@@ -20,6 +21,8 @@ class Piece():
             self.ver = ver
             self.moves = [False]
             self.isAlive = True
+
+            self.canBeEnPassant = False
 
         
     def __str__(self) -> str:
@@ -96,13 +99,16 @@ class Model():
     def __str__(self) -> str:
         return f'{np.matrix(self.board)}'
 
-    def deletePiece(self, position: Position):
+    def deletePiece(self, position: Position): #deletes piece at a given position
         try:
             piece = self.board[position.x][position.y]
-            print(piece)    
-            if piece:
-                self.piece_dict[piece.type].remove(piece)
-                self.board[position.x][position.y] = None
+            if piece == None:
+                print("The square is empty")
+            else:
+                if piece:
+                    print(piece)    
+                    self.piece_dict[piece.type].remove(piece)
+                    self.board[position.x][position.y] = None
         except IndexError:
             print("out of bound range")
 
@@ -125,24 +131,38 @@ class Model():
     keep a list of all possible moves made by looping through all the offsets and if it doesn't go out of bound or hits another piece, adds it to the list.
     """                   
     def calculatePawns(self, pieces):
-       
-        boardLimit = [-1, 8]
-
         for piece in pieces:
+            piece.canBeEnPassant = False
             curr_pos = piece.position
-
             forward = 1 if piece.color == "w" else -1 #differentiate white piece from black piece
-        
-            if not curr_pos.y + forward in boardLimit:
-                if not self.board[curr_pos.x][curr_pos.y + forward]:
-                    new_pos = Position(curr_pos.x, curr_pos.y + forward)
-                    piece.moves.append(new_pos)
+            new_y = curr_pos.x + forward
+            if new_y > MIN and new_y < MAX: # check for out of bound
+                try:
+                    if self.board[curr_pos.x][new_y] == None: # add to move
+                        piece.moves.append(Position(curr_pos.x, new_y))
+
+                    
+                    def addDiagonalTake(piece, diag_x, new_y): #checks if the forward diagonal of the pawn contain takable pieces
+                        if diag_x > MIN and diag_x < MAX and new_y > MIN and new_y < MAX:
+                            if self.board[diag_x][new_y]:
+                                if self.board[diag_x][new_y].color != piece.color:
+                                    piece.canTakes.append(Position(diag_x, new_y))
+                    addDiagonalTake(piece, curr_pos.x + 1, new_y)
+                    addDiagonalTake(piece, curr_pos.x - 1, new_y)
+
+
+                except IndexError:
+                    raise ("out of board")
                 
             # checks for starting position to move 2 spaces
             if piece.color == "w" and piece.position.y == 1 and not self.board[curr_pos.x][curr_pos.y + 2]:
+                piece.canBeEnPassant = True
                 piece.moves.append(Position(curr_pos.x, curr_pos.y + 2))
             if piece.color == "b" and piece.position.y == 6 and not self.board[curr_pos.x][curr_pos.y - 2]:
+                piece.canBeEnPassant = True
                 piece.moves.append(Position(curr_pos.x, curr_pos.y - 2))
+
+            
             
                 
 
@@ -173,7 +193,7 @@ class Model():
                         else:
                             break
                     except:
-                        break
+                        raise ("out of board")
 
     def calculateKnights(self, pieces):
         offsetRange = [
@@ -198,7 +218,7 @@ class Model():
                         elif self.board[new_x][new_y].color != piece.color: #add to move is other piece is diff color
                             piece.canTakes.append(Position(new_x, new_y))
                     except IndexError:
-                        pass
+                        raise ("out of board")
 
     def calculateBishops(self, pieces):
         offsetRange = [
@@ -228,7 +248,7 @@ class Model():
                         else:
                             break
                     except:
-                        break
+                        raise ("out of board")
             
 
     def calculateQueens(self, pieces):
@@ -260,18 +280,13 @@ class Model():
                             piece.canTakes.append(Position(new_x, new_y))  
                             break
                     except IndexError:
-                        print('out of bound')
+                        raise ("out of board")
 
 
             
             
 
 m = Model()
-m.deletePiece(Position(1,1))
-m.deletePiece(Position(2,1))
-m.deletePiece(Position(3,1))
-m.deletePiece(Position(9,9))
-pp(m.piece_dict)
 print(m)
 
 
