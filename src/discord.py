@@ -55,10 +55,11 @@ async def edit(ctx):
 
 c = Controller()
 @bot.command
+@lightbulb.option('notation', 'input chess notation')
 @lightbulb.command('ping', 'ping')
 @lightbulb.implements(lightbulb.SlashCommand)
 async def ping(ctx):
-    await ctx.respond(c.ping())
+    await ctx.respond(c.processInput(ctx.options.notation))
 
 
 

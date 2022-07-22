@@ -9,7 +9,6 @@ class Controller():
     def checkIsValidMove(self):
         pass
 
-    def ping(self):
-        self.count += 1
-        return self.count
+    def processInput(self, notation: str):
+        return notation
     
