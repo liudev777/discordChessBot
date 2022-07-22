@@ -22,7 +22,8 @@ class Piece():
             self.moves = [False]
             self.isAlive = True
 
-            self.canBeEnPassant = False
+            self.canEnPassant = []
+            self.canCastle = []
 
         
     def __str__(self) -> str:
@@ -195,6 +196,8 @@ class Model():
                     except:
                         raise ("out of board")
 
+                
+
     def calculateKnights(self, pieces):
         offsetRange = [
             (1, 2),
@@ -282,6 +285,7 @@ class Model():
                     except IndexError:
                         raise ("out of board")
 
+    
 
             
             
