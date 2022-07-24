@@ -18,8 +18,10 @@ class Piece():
             self.color = color
             self.type = type
             self.ver = ver
-            self.moves = [False]
+            self.moves = []
             self.isAlive = True
+
+            self.canTakes = []
 
         
     def __str__(self) -> str:
@@ -114,9 +116,9 @@ class Model():
     def calculateAll(self):
         if self.piece_dict:
             self.calculatePawns(self.piece_dict["P"])
-            self.calculateKnights(self.piece_dict["R"])
-            self.calculateBishops(self.piece_dict["N"])
-            self.calculateRooks(self.piece_dict["B"])
+            self.calculateKnights(self.piece_dict["N"])
+            self.calculateBishops(self.piece_dict["B"])
+            self.calculateRooks(self.piece_dict["R"])
             self.calculateQueens(self.piece_dict["Q"])
             self.calculateKings(self.piece_dict["K"])
 
@@ -260,19 +262,13 @@ class Model():
                             piece.canTakes.append(Position(new_x, new_y))  
                             break
                     except IndexError:
-                        print('out of bound')
+                        pass
+                        # print('out of bound')
 
 
             
             
 
-m = Model()
-m.deletePiece(Position(1,1))
-m.deletePiece(Position(2,1))
-m.deletePiece(Position(3,1))
-m.deletePiece(Position(9,9))
-pp(m.piece_dict)
-print(m)
 
 
 """
