@@ -1,6 +1,5 @@
 from ast import Raise
 from collections import namedtuple
-from matplotlib.pyplot import pie
 from settings import Position
 import numpy as np
 from pprint import pp
@@ -96,7 +95,7 @@ class Model():
                 self.board[piece.position.x][piece.position.y] = piece
         
     def __str__(self) -> str:
-        return f'{np.matrix(self.board)}'
+        return f'{np.matrix(np.array(self.board).transpose())}'
 
     def deletePiece(self, position: Position):
         try:
