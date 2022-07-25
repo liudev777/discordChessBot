@@ -19,13 +19,10 @@ class Piece():
             self.color = color
             self.type = type
             self.ver = ver
-            self.moves = [False]
+            self.moves = []
+            self.canTakes = []
             self.isAlive = True
-
-            self.canEnPassant = []
-            self.canCastle = []
-
-        
+            
     def __str__(self) -> str:
         return (f'color: {self.color}, type: {self.type}, moves: {self.moves}, isAlive: {self.isAlive} position: {self.position}')
 
