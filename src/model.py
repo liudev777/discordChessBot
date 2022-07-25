@@ -1,7 +1,5 @@
 from ast import Raise
 from collections import namedtuple
-from types import NoneType
-from matplotlib.pyplot import pie
 from settings import Position
 import numpy as np
 from pprint import pp
@@ -20,6 +18,7 @@ class Piece():
             self.type = type
             self.ver = ver
             self.moves = []
+            
             self.canTakes = []
             self.isAlive = True
             
@@ -95,7 +94,7 @@ class Model():
                 self.board[piece.position.x][piece.position.y] = piece
         
     def __str__(self) -> str:
-        return f'{np.matrix(self.board)}'
+        return f'{np.matrix(np.array(self.board).transpose())}'
 
     def deletePiece(self, position: Position): #deletes piece at a given position
         try:
@@ -118,9 +117,9 @@ class Model():
     def calculateAll(self):
         if self.piece_dict:
             self.calculatePawns(self.piece_dict["P"])
-            self.calculateKnights(self.piece_dict["R"])
-            self.calculateBishops(self.piece_dict["N"])
-            self.calculateRooks(self.piece_dict["B"])
+            self.calculateKnights(self.piece_dict["N"])
+            self.calculateBishops(self.piece_dict["B"])
+            self.calculateRooks(self.piece_dict["R"])
             self.calculateQueens(self.piece_dict["Q"])
             self.calculateKings(self.piece_dict["K"])
 
@@ -280,16 +279,12 @@ class Model():
                             piece.canTakes.append(Position(new_x, new_y))  
                             break
                     except IndexError:
-                        raise ("out of board")
 
-    
+                        pass
+                        # print('out of bound')
 
-            
-            
 
-m = Model()
-print(m)
-
+           
 
 """
 TO DO:
