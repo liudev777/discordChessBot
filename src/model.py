@@ -34,12 +34,15 @@ class Piece():
 
 class Model():
     def __init__(self) -> None:
+        self.turn = 0
         self.whiteTurn = True
         self.currentMove = None
         self.isCheck = False
         self.isCheckmate = False
         self.isStalemate = False
         self.canCastle = False
+
+        self.enPassantablePawns = []
 
         self.pawns = [None] * 16
         self.knights = [None] * 4
@@ -147,16 +150,21 @@ class Model():
                     addDiagonalTake(piece, curr_pos.x + 1, new_y)
                     addDiagonalTake(piece, curr_pos.x - 1, new_y)
 
+                    """
+                    enpassant
+                    """
 
+                    
+                
                 except IndexError:
                     raise ("out of board")
                 
             # checks for starting position to move 2 spaces
             if piece.color == "w" and piece.position.y == 1 and not self.board[curr_pos.x][curr_pos.y + 2]:
-                piece.canBeEnPassant = True
+                self.enPassantablePawns.append()
                 piece.moves.append(Position(curr_pos.x, curr_pos.y + 2))
             if piece.color == "b" and piece.position.y == 6 and not self.board[curr_pos.x][curr_pos.y - 2]:
-                piece.canBeEnPassant = True
+                self.enPassantablePawns.append()
                 piece.moves.append(Position(curr_pos.x, curr_pos.y - 2))
 
             
