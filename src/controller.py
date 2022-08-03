@@ -12,8 +12,8 @@ class Controller():
     def checkIsValidMove(self):
         pass
     
-    def processInput(self, notation: str):
-        validColumns = 'abcdefgh'
+    def processInput(self, notation: str): # reads the input from the discord side and converts it into a command
+        validFiles = 'abcdefgh'
         capture = False
         n = notation #ex: Ne4
         origin = None
@@ -24,7 +24,8 @@ class Controller():
         destinationNotation = n[-2:] #ex: e2
         targetPiece = [] #potential pieces that can move that the destination
 
-        if destinationNotation[0] not in validColumns:
+        # checks if notation is in bound
+        if destinationNotation[0] not in validFiles:
             raise IndexError("invalid destination column")
         if int(destinationNotation[1]) < 1 or int(destinationNotation[1]) > 8:
             raise IndexError("invalid destination row")
@@ -32,6 +33,9 @@ class Controller():
         l = len(n) # length of the notation
 
         if l == 2: #e4
+            """
+            still deciding if we want to split piece array into b and w
+            """
             pieces = self.m.piece_dict["P"]
             
             for piece in pieces: 
@@ -41,7 +45,7 @@ class Controller():
                             raise ("ambiguous notation")
                         origin = piece.position
         
-        if n[0] in validColumns: #exd5
+        if n[0] in validFiles: #exd5
             for piece in pieces:
                     if piece.position.y == rank or piece.position.x == file:
                         origin = piece.position
