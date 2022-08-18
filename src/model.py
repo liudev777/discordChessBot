@@ -20,6 +20,7 @@ class Piece():
             self.moves = []
             
             self.canTakes = []
+            self.canEnPassant = []
             self.isAlive = True
             
     def __str__(self) -> str:
@@ -167,7 +168,7 @@ class Model():
             piece.canBeEnPassant = False
             curr_pos = piece.position
             forward = 1 if piece.color == "w" else -1 #differentiate white piece from black piece
-            new_y = curr_pos.x + forward
+            new_y = curr_pos.y + forward
             if new_y > MIN and new_y < MAX: # check for out of bound
                 try:
                     if self.board[curr_pos.x][new_y] == None: # add to move
@@ -185,18 +186,34 @@ class Model():
                     """
                     enpassant
                     """
-
                     
-                
+            
+
                 except IndexError:
                     raise ("out of board")
+            
+
+            # def addEnPassantTake(piece, curr_pos, dir_x):
+            #     square = self.board[dir_x][curr_pos.y]
+            #     target_square = self.board[dir_x][curr_pos.y + forward]
+            #     if square:
+            #         if square.color != piece.color and square.type == "P" and square in self.enPassantablePawns:
+            #             if target_square == None:
+            #                 piece.canEnPassant.append(target_square)
+
+
+            # if (piece.color == "w" and piece.position.y == 4) or (piece.color == "b" and piece.position.y == 3):
+            #     if (piece.position.x-1 > MIN):
+            #         addEnPassantTake(piece, curr_pos, piece.position.x-1)
+            #     if (piece.position.x+1 < MAX):
+            #         addEnPassantTake(piece, curr_pos, piece.position.x+1)
                 
+        
+
             # checks for starting position to move 2 spaces
             if piece.color == "w" and piece.position.y == 1 and not self.board[curr_pos.x][curr_pos.y + 2]:
-                self.enPassantablePawns.append(piece)
                 piece.moves.append(Position(curr_pos.x, curr_pos.y + 2))
             if piece.color == "b" and piece.position.y == 6 and not self.board[curr_pos.x][curr_pos.y - 2]:
-                self.enPassantablePawns.append(piece)
                 piece.moves.append(Position(curr_pos.x, curr_pos.y - 2))
 
             
@@ -277,7 +294,6 @@ class Model():
                             break
                         if self.board[new_x][new_y]: #adds opposite color piece coord into moveset
                             if self.board[new_x][new_y].color != piece.color:
-                                print(self.board[new_x][new_y].color)
                                 piece.canTakes.append(Position(new_x, new_y))  
                                 break
                         if not self.board[new_x][new_y]: #add to move if board is empty and increment x y
@@ -315,7 +331,6 @@ class Model():
                         if self.board[new_x][new_y] == None: # add none space to move
                             piece.moves.append(Position(new_x, new_y))
                         elif self.board[new_x][new_y].color != piece.color:
-                            print(self.board[new_x][new_y].color)
                             piece.canTakes.append(Position(new_x, new_y))  
                             break
                     except IndexError:
@@ -325,7 +340,6 @@ class Model():
 
 
 m = Model()
-m.calculateAll()
 m.printBoard()
 
 """
