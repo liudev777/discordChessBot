@@ -1,5 +1,3 @@
-#from curses.ascii import isdigit
-from regex import E
 from requests import post
 from settings import Position
 from model import Model
@@ -36,7 +34,8 @@ class Controller():
             """
             still deciding if we want to split piece array into b and w
             """
-            pieces = self.m.piece_dict["P"]
+            pieces = [c for p in self.m.piece_dict["P"] for c in p]
+            print("pieces:", pieces) #del
             
             for piece in pieces: 
                     if destination in piece.moves:
@@ -51,7 +50,8 @@ class Controller():
                         origin = piece.position
 
         if l >= 3: #Nf3, Rdf8, R1a3, Qh4e1, Bxc6, Rdxf8, R1xa3, Qh4xe1
-            pieces = self.m.piece_dict[n[0]] #ex: 'K'
+            pieces = [c for p in self.m.piece_dict[n[0]] for c in p] #ex: 'K'
+            print ("pieces2 : ", pieces)
             if n[-3] == "x": #checks if user wants to take, speeds up taking process. If there is no valid piece to take, send error. (Note user doesn't need 'x' to take)
                 l -= 1
                 capture = True
@@ -98,7 +98,7 @@ c.processInput("e4")
 c.processInput("e5")
 c.processInput("Nf3")
 c.processInput("Nc6")
-c.processInput("Bb5")
-c.processInput("a6")
-c.processInput("Bxc6")
+# c.processInput("Bb5")
+# c.processInput("a6")
+# c.processInput("Bxc6")
 
