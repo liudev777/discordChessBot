@@ -134,9 +134,15 @@ class Model():
             print("out of bound range")
 
     def movePiece(self, src: Position, dest: Position):
+        if self.board[src.x][src.y] == None:
+            print("Cannot move empty space!")
+        else:
             if self.board[dest.x][dest.y] != None:
                 self.board[dest.x][dest.y].isAlive = False
             self.board[src.x][src.y].position = dest
+            """temp"""
+            self.board[dest.x][dest.y] = self.board[src.x][src.y]
+            self.board[src.x][src.y] = None
 
     def calculateWhite(self):
         if self.piece_dict:
@@ -339,8 +345,6 @@ class Model():
                         # print('out of bound')
 
 
-m = Model()
-m.printBoard()
 
 """
 TO DO:
