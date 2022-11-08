@@ -124,9 +124,6 @@ class Model():
         print('\n'.join(table))
 
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-=======
-
-
 
     def deletePiece(self, position: Position): #deletes piece at a given position
         try:

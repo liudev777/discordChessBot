@@ -1,6 +1,7 @@
 from pprint import pp
 from model import Model
 from settings import Position
+from view import *
 
 
 m = Model() 
@@ -18,5 +19,7 @@ m.movePiece((Position(7,7)), Position(3,3))
 
 board = m.board
 m.printBoard()
+toFEN(m.board)
+
 # pp(board)
 
