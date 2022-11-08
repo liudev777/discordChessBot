@@ -43,6 +43,8 @@ class Model():
         self.isStalemate = False
         self.canCastle = False
 
+        self.enPassantablePawns = []
+
 
         self.wPawns = [None] * 8
         self.wKnights = [None] * 2
@@ -111,14 +113,19 @@ class Model():
         return f'{np.matrix(np.array(self.board).transpose())}'
 
     def printBoard(self):
+
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
         matrix = self.board
         s = [[str(e) for e in row] for row in matrix]
         lens = [max(map(len, col)) for col in zip(*s)]
         fmt = '\t'.join('{{:{}}}'.format(x) for x in lens)
         table = [fmt.format(*row) for row in s]
         print('\n'.join(table))
+
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+=======
+
 
 
     def deletePiece(self, position: Position): #deletes piece at a given position
@@ -135,9 +142,15 @@ class Model():
             print("out of bound range")
 
     def movePiece(self, src: Position, dest: Position):
+        if self.board[src.x][src.y] == None:
+            print("Cannot move empty space!")
+        else:
             if self.board[dest.x][dest.y] != None:
                 self.board[dest.x][dest.y].isAlive = False
             self.board[src.x][src.y].position = dest
+            """temp"""
+            self.board[dest.x][dest.y] = self.board[src.x][src.y]
+            self.board[src.x][src.y] = None
 
     def calculateWhite(self):
         if self.piece_dict:
@@ -338,10 +351,6 @@ class Model():
 
                         pass
                         # print('out of bound')
-
-
-# Model().printBoard()
-# pp(Model().board)
 
 """
 TO DO:
