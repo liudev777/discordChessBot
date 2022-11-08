@@ -45,6 +45,7 @@ class Model():
 
         self.enPassantablePawns = []
 
+
         self.wPawns = [None] * 8
         self.wKnights = [None] * 2
         self.wBishops = [None] * 2
@@ -112,12 +113,19 @@ class Model():
         return f'{np.matrix(np.array(self.board).transpose())}'
 
     def printBoard(self):
+
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
         matrix = self.board
         s = [[str(e) for e in row] for row in matrix]
         lens = [max(map(len, col)) for col in zip(*s)]
         fmt = '\t'.join('{{:{}}}'.format(x) for x in lens)
         table = [fmt.format(*row) for row in s]
         print('\n'.join(table))
+
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+=======
+
 
 
     def deletePiece(self, position: Position): #deletes piece at a given position
@@ -343,8 +351,6 @@ class Model():
 
                         pass
                         # print('out of bound')
-
-
 
 """
 TO DO:
