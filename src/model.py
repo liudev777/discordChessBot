@@ -105,7 +105,7 @@ class Model():
         for coloredPieces in self.piece_dict.values():
             for pieces in coloredPieces:
                 for piece in pieces:
-                    self.board[piece.position.y][piece.position.x] = piece
+                    self.board[piece.position.x][piece.position.y] = piece
         
     def __str__(self) -> str:
         return f'{np.matrix(np.array(self.board).transpose())}'
@@ -340,8 +340,8 @@ class Model():
                         # print('out of bound')
 
 
-Model().printBoard()
-print(Model().board)
+# Model().printBoard()
+# pp(Model().board)
 
 """
 TO DO:

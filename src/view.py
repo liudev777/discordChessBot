@@ -1,10 +1,10 @@
 from model import Model
 
 m = Model()
-board = m.board
-board[0][3] = None
-board[0][4] = None
-board[0][5] = None
+board = [[m.board[j][i] for j in range(len(m.board))] for i in range(len(m.board[0]))]
+# board[0][3] = None
+# board[0][4] = None
+# board[0][5] = None
 
 print(board)
 
