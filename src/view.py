@@ -8,7 +8,7 @@ board[0][5] = None
 
 print(board)
 
-def toFEN(board):
+def toFEN(board): #converts board to FEN
     fen = []
     none_count = 0
     for row in board:
