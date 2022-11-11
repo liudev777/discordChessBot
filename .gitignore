@@ -1,4 +1,7 @@
 # Editors
+.src.discord.env
+.env
+
 .vscode/
 .idea/
 

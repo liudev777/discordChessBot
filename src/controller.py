@@ -3,12 +3,14 @@ from settings import Position
 from model import Model
 
 class Controller():
+
     def __init__(self, model: Model) -> None:
         self.m = model
         pass
 
     def checkIsValidMove(self):
         pass
+
     
     def processInput(self, notation: str): # reads the input from the discord side and converts it into a command
         validFiles = 'abcdefgh'
