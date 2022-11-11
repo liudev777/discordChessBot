@@ -2,7 +2,7 @@ from pprint import pp
 from model import Model
 
 m = Model()
-
+board = m.board
 # board[0][3] = None
 # board[0][4] = None
 # board[0][5] = None
@@ -17,7 +17,7 @@ def toFEN(board): #converts board to FEN
         for piece in row:
             if piece:
                 if none_count:
-                    fen_row.append((none_count))
+                    fen_row.append(str(none_count))
                     none_count = 0
                 if piece.color == 'w':
                     notation = piece.type.upper()
@@ -27,9 +27,17 @@ def toFEN(board): #converts board to FEN
             else:
                 none_count += 1
         if none_count:
-            fen_row.append(none_count)
+            fen_row.append(str(none_count))
             none_count = 0
         fen.append(fen_row)
+    return fen
+
+def toURL(fen: tuple):
     pp(fen)
+    fen = '/'.join([''.join(row) for row in fen])
+    # newlist = "/".join(fen)
+    color = 'b'
+    url = f"https://fen2png.com/api/?fen={fen}%20{color}%20-%20-&raw=true"
+    print(url)
 
-
+toURL(toFEN(board))
