@@ -9,7 +9,7 @@ board = m.board
 
 def toFEN(board): #converts board to FEN
     board = [[board[j][i] for j in range(len(board))] for i in range(len(board[0])-1, -1, -1)]
-    pp(board)
+    # pp(board)
     fen = []
     none_count = 0
     for row in board:
@@ -32,12 +32,10 @@ def toFEN(board): #converts board to FEN
         fen.append(fen_row)
     return fen
 
-def toURL(fen: tuple):
-    pp(fen)
+def toURL(fen: tuple, turn):
     fen = '/'.join([''.join(row) for row in fen])
-    # newlist = "/".join(fen)
-    color = 'b'
+    color = turn
     url = f"https://fen2png.com/api/?fen={fen}%20{color}%20-%20-&raw=true"
-    print(url)
+    return url
 
-toURL(toFEN(board))
+# toURL(toFEN(board))

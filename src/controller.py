@@ -35,6 +35,7 @@ class Controller():
         if l == 2: #e4
             """
             still deciding if we want to split piece array into b and w
+            *update* currently split into b and w
             """
             pieces = [c for p in self.m.piece_dict["P"] for c in p]
             print("pieces:", pieces) #del
@@ -42,14 +43,15 @@ class Controller():
             for piece in pieces: 
                     if destination in piece.moves:
                         count += 1
-                        if count == 2:
+                        if count >= 2:
                             raise ("ambiguous notation")
                         origin = piece.position
+            count = 0 #reset counter
         
-        if n[0] in validFiles: #exd5
-            for piece in pieces:
-                    if piece.position.y == rank or piece.position.x == file:
-                        origin = piece.position
+            if n[0] in validFiles: #exd5
+                for piece in pieces:
+                        if piece.position.y == rank or piece.position.x == file:
+                            origin = piece.position
 
         if l >= 3: #Nf3, Rdf8, R1a3, Qh4e1, Bxc6, Rdxf8, R1xa3, Qh4xe1
             pieces = [c for p in self.m.piece_dict[n[0]] for c in p] #ex: 'K'
