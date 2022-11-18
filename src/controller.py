@@ -1,3 +1,4 @@
+from pprint import pp
 from requests import post
 from settings import Position
 from model import Model
@@ -32,9 +33,10 @@ class Controller():
         destination = Position(ord(destinationNotation[0]) - 97, int(destinationNotation[1]) - 1) 
         l = len(n) # length of the notation
 
-        if l == 2: #e4
+        if l == 2: #e4; we know it will be pawn
             """
             still deciding if we want to split piece array into b and w
+            *update* currently split into b and w
             """
             pieces = [c for p in self.m.piece_dict["P"] for c in p]
             print("pieces:", pieces) #del
@@ -42,9 +44,11 @@ class Controller():
             for piece in pieces: 
                     if destination in piece.moves:
                         count += 1
-                        if count == 2:
-                            raise ("ambiguous notation")
+                        print("selected piece", piece)
                         origin = piece.position
+            if count >= 2:
+                raise ("ambiguous notation")
+            count = 0 #reset counter
         
         if n[0] in validFiles: #exd5
             for piece in pieces:
@@ -82,7 +86,7 @@ class Controller():
         #print("pieces", pieces)
         print(f"origin: {origin}")
         print(f"destination: {destination}")
-
+        return(origin, destination)
         #if len(targetPiece) > 2 and l < 4: #checks if only one piece has the destination, otherwise throw error.
         #    raise (f"ambiguous notation, there are multiple {n[0]} pieces that can move to {n[-2:]}!")
         #else:
@@ -91,15 +95,23 @@ class Controller():
         # print('process input pieces', pieces)
         # print(targetPostition)
 
+    def callMove(self, notation: str):
+        instruction = self.processInput(notation)
+        self.m.movePiece(instruction[0], instruction[1])
+        return
+
 
 m = Model()
 m.calculateAll()
-print(m)
+pp(m.board)
 c = Controller(m)
-c.processInput("e4")
-c.processInput("e5")
-c.processInput("Nf3")
-c.processInput("Nc6")
+c.callMove("e5")
+pp(m.board)
+
+# c.processInput("f4")
+# c.processInput("e5")
+# c.processInput("Nf3")
+# c.processInput("Nc6")
 # c.processInput("Bb5")
 # c.processInput("a6")
 # c.processInput("Bxc6")
