@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 from model import Model
 from controller import Controller
 
+from tests import *
+
 load_dotenv()
 
 bot = lightbulb.BotApp(
@@ -18,7 +20,6 @@ async def start_up_message(event):
     # await event.app.rest.create_message(847165448726118453, "hi")
 
 msg = []
-
 @bot.command
 # @lightbulb.option('col', 'column')
 # @lightbulb.option('row', 'row')
@@ -53,13 +54,15 @@ async def edit(ctx):
     await bot.rest.edit_message(m.channel_id, m.id, messages[num])
     await ctx.respond("changed", flags=hikari.MessageFlag.EPHEMERAL)
 
-c = Controller()
+# m = Model()
+# c = Controller(m)
 @bot.command
-@lightbulb.option('notation', 'input chess notation')
-@lightbulb.command('ping', 'ping')
+# @lightbulb.option('notation', 'input chess notation')
+@lightbulb.command('ding', 'ping')
 @lightbulb.implements(lightbulb.SlashCommand)
 async def ping(ctx):
-    await ctx.respond(c.processInput(ctx.options.notation))
+    print(m)
+    await ctx.respond(toURL(m.board))
 
 
 
