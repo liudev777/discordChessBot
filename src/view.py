@@ -32,12 +32,12 @@ def toFEN(board): #converts board to FEN
         fen.append(fen_row)
     return fen
 
-def toURL(fen: tuple):
-    pp(fen)
+def toURL(board):
+    fen = toFEN(board)
     fen = '/'.join([''.join(row) for row in fen])
     # newlist = "/".join(fen)
     color = 'b'
     url = f"https://fen2png.com/api/?fen={fen}%20{color}%20-%20-&raw=true"
-    print(url)
+    return url
 
-toURL(toFEN(board))
+toURL(board)

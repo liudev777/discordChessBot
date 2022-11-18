@@ -17,9 +17,7 @@ m.movePiece((Position(4,1)), Position(7,4))
 m.movePiece((Position(5,1)), Position(5,2))
 m.movePiece((Position(7,7)), Position(3,3))
 
-board = m.board
-m.printBoard()
-toFEN(m.board)
+
 
 # pp(board)
 
