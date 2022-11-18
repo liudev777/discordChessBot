@@ -2,6 +2,7 @@ from pprint import pp
 from requests import post
 from settings import Position
 from model import Model
+from view import *
 
 class Controller():
 
@@ -96,22 +97,33 @@ class Controller():
         # print(targetPostition)
 
     def callMove(self, notation: str):
+        self.m.calculateAll()
         instruction = self.processInput(notation)
         self.m.movePiece(instruction[0], instruction[1])
         return
 
+    def sendFEN(self, notation: str):
+        print("notation", notation)
+        self.callMove(notation)
+        return toURL(self.m.board)
 
-m = Model()
-m.calculateAll()
-pp(m.board)
-c = Controller(m)
-c.callMove("e5")
-c.callMove("f4")
-c.callMove("e5")
-c.callMove("Nf3")
-c.callMove("Nc6")
-# c.processInput("Bb5")
-c.callMove("a6")
-# c.processInput("Bxc6")
 
-pp(m.board)
+# m = Model()
+# m.calculateAll()
+# pp(m.board)
+# c = Controller(m)
+# c.callMove("e5")
+# c.callMove("f4")
+# c.callMove("f4")
+# c.callMove("e3")
+# c.callMove("e5") #disappears for some reason
+# c.callMove("Nf3")
+# c.callMove("Nc6")
+# c.callMove("Bb5")
+# c.callMove("a6")
+# # c.processInput("Bxc6")
+
+# pp(m.board)
+# print(toURL(m.board))
+
+# pp(c.sendFEN('e4'))
