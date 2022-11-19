@@ -62,8 +62,11 @@ async def ping(ctx):
 async def move(ctx):
     notation = str(ctx.options.position)
     print(notation)
-    await ctx.respond(c.sendFEN(notation))
-    await ctx.respond(notation)
+    try:
+        await ctx.respond(c.sendFEN(notation))
+        await ctx.respond(notation)
+    except Exception as e:
+        await ctx.respond(f'Illegal input')
     # await s.getCtx().message().edit("hi")
 
 

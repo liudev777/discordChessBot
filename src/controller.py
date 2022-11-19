@@ -99,12 +99,19 @@ class Controller():
     def callMove(self, notation: str):
         self.m.calculateAll()
         instruction = self.processInput(notation)
-        self.m.movePiece(instruction[0], instruction[1])
+        origin = instruction[0]
+        dest = instruction[1]
+        if origin == None:
+            raise Exception("Trying to move empty square")
+        self.m.movePiece(origin, dest)
         return
 
     def sendFEN(self, notation: str):
         print("notation", notation)
-        self.callMove(notation)
+        try:
+            self.callMove(notation)
+        except Exception as e:
+            raise e
         return toURL(self.m.board)
 
 
@@ -127,3 +134,7 @@ class Controller():
 # print(toURL(m.board))
 
 # pp(c.sendFEN('e4'))
+
+"""
+implement turns so each piece only have valid move during their turn
+"""

@@ -167,8 +167,13 @@ class Model():
             self.calculateQueens(self.piece_dict["Q"][1])
             self.calculateKings(self.piece_dict["K"][1])
     def calculateAll(self):
+        self.resetMoves()
         self.calculateWhite()
         self.calculateBlack()
+    
+    def resetMoves(self):
+        [pieces.moves.clear() for rows in self.board for pieces in rows if pieces != None]
+        return
 
     """
     Plan:
