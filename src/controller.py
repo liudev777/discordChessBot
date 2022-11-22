@@ -110,7 +110,7 @@ class Controller():
         if origin == None:
             raise Exception("Trying to move empty square")
         self.m.movePiece(origin, dest)
-        m.turn += 1
+        self.m.turn += 1
         return
 
     def sendFEN(self, notation: str):
@@ -126,6 +126,17 @@ class Controller():
         self.m = newBoard
         return
 
+    def getTurns(self):
+        print('turn:', self.m.turn)
+        return
+    
+    def getMoves(self):
+        moves = [f'{piece} - {piece.moves}' for rows in self.m.board for piece in rows if piece != None]
+        pp(moves)
+        return
+
+    def getBoard(self):
+        return (toURL(self.m.board, self.m.turn))
 
 # m = Model()
 # m.calculateAll()

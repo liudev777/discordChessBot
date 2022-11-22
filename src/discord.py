@@ -45,22 +45,22 @@ async def edit(ctx):
     await bot.rest.edit_message(m.channel_id, m.id, messages[num])
     await ctx.respond("changed", flags=hikari.MessageFlag.EPHEMERAL)
 
-m = Model()
-c = Controller(m)
-@bot.command
-# @lightbulb.option('notation', 'input chess notation')
-@lightbulb.command('ding', 'ping')
-@lightbulb.implements(lightbulb.SlashCommand)
-async def ping(ctx):
-    print(m)
-    await ctx.respond(toURL(m.board))
+c = Controller(Model())
+# @bot.command
+# # @lightbulb.option('notation', 'input chess notation')
+# @lightbulb.command('ding', 'ping')
+# @lightbulb.implements(lightbulb.SlashCommand)
+# async def ping(ctx):
+#     print(m)
+#     await ctx.respond(toURL(m.board))
 
 
 @bot.command
 @lightbulb.command('check', 'check piece moves')
 @lightbulb.implements(lightbulb.SlashCommand)
 async def check(ctx):
-    m.checkMoves()
+    c.getMoves()
+    c.getTurns()
     await ctx.respond('sent')
 
 @bot.command
@@ -84,6 +84,6 @@ async def move(ctx):
 @lightbulb.implements(lightbulb.SlashCommand)
 async def start(ctx):
     c.resetBoard()
-    await ctx.respond(toURL(m.board, 0))
+    await ctx.respond(c.getBoard())
 
 bot.run()
