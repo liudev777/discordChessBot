@@ -74,6 +74,7 @@ async def move(ctx):
         await ctx.respond(c.sendFEN(notation))
         await ctx.respond(notation)
     except Exception as e:
+        print(e)
         await ctx.respond(f'Illegal input')
     # await s.getCtx().message().edit("hi")
 
