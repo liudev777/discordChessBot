@@ -77,6 +77,13 @@ async def move(ctx):
         await ctx.respond(f'Illegal input')
     # await s.getCtx().message().edit("hi")
 
+# will implement separate restriction for user based instead of turn based to tell user its not their turn
 
+@bot.command
+@lightbulb.command('start', 'start the board')
+@lightbulb.implements(lightbulb.SlashCommand)
+async def start(ctx):
+    c.resetBoard()
+    await ctx.respond(toURL(m.board, 0))
 
 bot.run()

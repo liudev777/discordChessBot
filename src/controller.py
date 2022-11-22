@@ -22,6 +22,12 @@ class Controller():
         rank = None
         file = None
         count = 0
+        colorTurn = 1 # 1 denotes white, 0 denotes black (order in dict)
+
+        if (m.turn % 2 == 0):
+            colorTurn = 0
+        else:
+            colorTurn = 1
 
         destinationNotation = n[-2:] #ex: e2
         targetPiece = [] #potential pieces that can move that the destination
@@ -39,7 +45,7 @@ class Controller():
             still deciding if we want to split piece array into b and w
             *update* currently split into b and w
             """
-            pieces = [c for p in self.m.piece_dict["P"] for c in p]
+            pieces = [p for p in self.m.piece_dict["P"][colorTurn]]
             print("pieces:", pieces) #del
             
             for piece in pieces: 
@@ -57,7 +63,7 @@ class Controller():
                         origin = piece.position
 
         if l >= 3: #Nf3, Rdf8, R1a3, Qh4e1, Bxc6, Rdxf8, R1xa3, Qh4xe1
-            pieces = [c for p in self.m.piece_dict[n[0]] for c in p] #ex: 'K'
+            pieces = [p for p in self.m.piece_dict[n[0]][colorTurn]] #ex: 'K'
             print ("pieces2 : ", pieces)
             if n[-3] == "x": #checks if user wants to take, speeds up taking process. If there is no valid piece to take, send error. (Note user doesn't need 'x' to take)
                 l -= 1
@@ -104,6 +110,7 @@ class Controller():
         if origin == None:
             raise Exception("Trying to move empty square")
         self.m.movePiece(origin, dest)
+        m.turn += 1
         return
 
     def sendFEN(self, notation: str):
@@ -112,7 +119,12 @@ class Controller():
             self.callMove(notation)
         except Exception as e:
             raise e
-        return toURL(self.m.board)
+        return toURL(self.m.board, m.turn)
+
+    def resetBoard(self):
+        newBoard = Model()
+        self.m = newBoard
+        return
 
 
 # m = Model()
