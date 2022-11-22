@@ -175,6 +175,11 @@ class Model():
         [pieces.moves.clear() for rows in self.board for pieces in rows if pieces != None]
         return
 
+    def checkMoves(self):
+        moves = [f'{piece} - {piece.moves}' for rows in self.board for piece in rows if piece != None]
+        pp(moves)
+
+
     """
     Plan:
     keep a list of all possible moves made by looping through all the offsets and if it doesn't go out of bound or hits another piece, adds it to the list.

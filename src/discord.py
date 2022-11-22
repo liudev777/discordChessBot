@@ -55,6 +55,14 @@ async def ping(ctx):
     print(m)
     await ctx.respond(toURL(m.board))
 
+
+@bot.command
+@lightbulb.command('check', 'check piece moves')
+@lightbulb.implements(lightbulb.SlashCommand)
+async def check(ctx):
+    m.checkMoves()
+    await ctx.respond('sent')
+
 @bot.command
 @lightbulb.option('position', 'Chess Notation')
 @lightbulb.command('move', 'move a piece')
@@ -68,6 +76,7 @@ async def move(ctx):
     except Exception as e:
         await ctx.respond(f'Illegal input')
     # await s.getCtx().message().edit("hi")
+
 
 
 bot.run()
