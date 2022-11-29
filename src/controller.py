@@ -22,6 +22,12 @@ class Controller():
         rank = None
         file = None
         count = 0
+        colorTurn = 1 # 1 denotes white, 0 denotes black (order in dict)
+
+        if (self.m.turn % 2 == 0):
+            colorTurn = 0
+        else:
+            colorTurn = 1
 
         destinationNotation = n[-2:] #ex: e2
         targetPiece = [] #potential pieces that can move that the destination
@@ -39,7 +45,7 @@ class Controller():
             still deciding if we want to split piece array into b and w
             *update* currently split into b and w
             """
-            pieces = [c for p in self.m.piece_dict["P"] for c in p]
+            pieces = [p for p in self.m.piece_dict["P"][colorTurn]]
             print("pieces:", pieces) #del
             
             for piece in pieces: 
@@ -48,7 +54,7 @@ class Controller():
                         print("selected piece", piece)
                         origin = piece.position
             if count >= 2:
-                raise ("ambiguous notation")
+                raise Exception("ambiguous notation")
             count = 0 #reset counter
         
         if n[0] in validFiles: #exd5
@@ -57,9 +63,9 @@ class Controller():
                         origin = piece.position
 
         if l >= 3: #Nf3, Rdf8, R1a3, Qh4e1, Bxc6, Rdxf8, R1xa3, Qh4xe1
-            pieces = [c for p in self.m.piece_dict[n[0]] for c in p] #ex: 'K'
+            pieces = [p for p in self.m.piece_dict[n[0]][colorTurn]] #ex: 'K'
             print ("pieces2 : ", pieces)
-            if n[-3] == "x": #checks if user wants to take, speeds up taking process. If there is no valid piece to take, send error. (Note user doesn't need 'x' to take)
+            if n[-3] == "x": #checks if user wants to take, speeds up taking process. If there is no valid piece to take, send error. (Note user doesn't need 'x' to take) *update: x is just optional now for notation sake
                 l -= 1
                 capture = True
             if l == 3:
@@ -67,22 +73,27 @@ class Controller():
                     if destination in piece.moves:
                         count += 1
                         if count == 2:
-                            raise ("ambiguous notation")
+                            raise Exception("ambiguous notation")
                         origin = piece.position
             if l == 4:
                 if n[1].isnumeric():
-                    col = n[1]
+                    file = n[1]
                 else:
-                    row = 97 - ord(n[1])
+                    rank = ord(n[1]) - 97
+                print(f"rank: {rank}, file: {file}") # delete
                 for piece in pieces:
-                        if piece.position.y == rank or piece.position.x == file:
-                            origin = piece.position
-            if not origin or origin.x == None or origin.y == None:
-                raise ("specified piece doesn't exist")
+                    if piece.position.x == rank or piece.position.y == file:
+                        origin = piece.position
+                print('l=4 origin:', origin)
+                if not origin or origin.x == None or origin.y == None:
+                    raise Exception("specified piece doesn't exist")
             if l == 5: #ex: Qc3d4
+                print("length 5")
                 origin = Position(ord(n[1]) - 97, int(n[2]) - 1)
+                print("length 5 origin:", origin)
                 if not m.board[origin.x][origin.y]:
-                    raise ("specified piece doesn't exist")
+                    print("dne")
+                    raise Exception("specified piece doesn't exist")
                 # add code
         #print("pieces", pieces)
         print(f"origin: {origin}")
@@ -104,6 +115,7 @@ class Controller():
         if origin == None:
             raise Exception("Trying to move empty square")
         self.m.movePiece(origin, dest)
+        self.m.turn += 1
         return
 
     def sendFEN(self, notation: str):
@@ -112,8 +124,24 @@ class Controller():
             self.callMove(notation)
         except Exception as e:
             raise e
-        return toURL(self.m.board)
+        return toURL(self.m.board, self.m.turn)
 
+    def resetBoard(self):
+        newBoard = Model()
+        self.m = newBoard
+        return
+
+    def getTurns(self):
+        print('turn:', self.m.turn)
+        return
+    
+    def getMoves(self):
+        moves = [f'{piece} - {piece.moves}' for rows in self.m.board for piece in rows if piece != None]
+        pp(moves)
+        return
+
+    def getBoard(self):
+        return (toURL(self.m.board, self.m.turn))
 
 # m = Model()
 # m.calculateAll()

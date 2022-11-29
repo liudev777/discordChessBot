@@ -19,7 +19,6 @@ class Piece():
             self.ver = ver
             self.moves = []
             
-            self.canTakes = []
             self.canEnPassant = []
             self.isAlive = True
             
@@ -78,8 +77,8 @@ class Model():
         self.wRooks[0] = Piece("w", "R", 1, Position(0,0))
         self.wKnights[0] = Piece("w", "N", 1, Position(1,0))
         self.wBishops[0] = Piece("w", "B", 1, Position(2,0))
-        self.wQueens[0] = Piece("w", "Q", 1, Position(3,0))
-        self.wKings[0] = Piece("w", "K", 1, Position(4,0))
+        self.wKings[0] = Piece("w", "K", 1, Position(3,0))
+        self.wQueens[0] = Piece("w", "Q", 1, Position(4,0))
         self.wBishops[1] = Piece("w", "B", 2, Position(5,0))
         self.wKnights[1] = Piece("w", "N", 2, Position(6,0))
         self.wRooks[1] = Piece("w", "R", 2, Position(7,0))
@@ -200,7 +199,7 @@ class Model():
                         if diag_x > MIN and diag_x < MAX and new_y > MIN and new_y < MAX:
                             if self.board[diag_x][new_y]:
                                 if self.board[diag_x][new_y].color != piece.color:
-                                    piece.canTakes.append(Position(diag_x, new_y))
+                                    piece.moves.append(Position(diag_x, new_y))
                     addDiagonalTake(piece, curr_pos.x + 1, new_y)
                     addDiagonalTake(piece, curr_pos.x - 1, new_y)
 
@@ -259,7 +258,7 @@ class Model():
                             break
                         if self.board[new_x][new_y]: #adds opposite color piece coord into moveset
                             if self.board[new_x][new_y].color != piece.color:
-                                piece.canTakes.append(Position(new_x, new_y))  
+                                piece.moves.append(Position(new_x, new_y))  
                                 break
                         if not self.board[new_x][new_y]: #add to move if board is empty and increment x y
                             piece.moves.append(Position(new_x, new_y))
@@ -293,7 +292,7 @@ class Model():
                         if self.board[new_x][new_y] == None: # add to move
                             piece.moves.append(Position(new_x, new_y))
                         elif self.board[new_x][new_y].color != piece.color: #add to move is other piece is diff color
-                            piece.canTakes.append(Position(new_x, new_y))
+                            piece.moves.append(Position(new_x, new_y))
                     except IndexError:
                         raise ("out of board")
 
@@ -315,7 +314,7 @@ class Model():
                             break
                         if self.board[new_x][new_y]: #adds opposite color piece coord into moveset
                             if self.board[new_x][new_y].color != piece.color:
-                                piece.canTakes.append(Position(new_x, new_y))  
+                                piece.moves.append(Position(new_x, new_y))  
                                 break
                         if not self.board[new_x][new_y]: #add to move if board is empty and increment x y
                             piece.moves.append(Position(new_x, new_y))
@@ -352,7 +351,7 @@ class Model():
                         if self.board[new_x][new_y] == None: # add none space to move
                             piece.moves.append(Position(new_x, new_y))
                         elif self.board[new_x][new_y].color != piece.color:
-                            piece.canTakes.append(Position(new_x, new_y))  
+                            piece.moves.append(Position(new_x, new_y))  
                             break
                     except IndexError:
 
