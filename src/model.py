@@ -174,9 +174,7 @@ class Model():
         [pieces.moves.clear() for rows in self.board for pieces in rows if pieces != None]
         return
 
-    def checkMoves(self):
-        moves = [f'{piece} - {piece.moves}' for rows in self.board for piece in rows if piece != None]
-        pp(moves)
+    
 
 
     """
@@ -346,17 +344,17 @@ class Model():
             for rang in offsetRange:
                 new_x = curr_pos.x + rang[0]
                 new_y = curr_pos.y + rang[1]
-                if not (new_x > MIN and new_x < MAX and new_y > MIN and new_y < MAX): # check for out of bound
+                if new_x > MIN and new_x < MAX and new_y > MIN and new_y < MAX: # check for out of bound
                     try:
-                        if self.board[new_x][new_y] == None: # add none space to move
+                        if self.board[new_x][new_y] == None: # add to move
                             piece.moves.append(Position(new_x, new_y))
-                        elif self.board[new_x][new_y].color != piece.color:
-                            piece.moves.append(Position(new_x, new_y))  
-                            break
+                        elif self.board[new_x][new_y].color != piece.color: #add to move is other piece is diff color
+                            piece.moves.append(Position(new_x, new_y))
                     except IndexError:
-
-                        pass
-                        # print('out of bound')
+                        raise ("out of board")
+    def checkChecks(self):
+        
+        return
 
 """
 TO DO:

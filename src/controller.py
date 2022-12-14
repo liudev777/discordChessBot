@@ -136,6 +136,7 @@ class Controller():
         return
     
     def getMoves(self):
+        self.m.calculateAll()
         moves = [f'{piece} - {piece.moves}' for rows in self.m.board for piece in rows if piece != None]
         pp(moves)
         return
